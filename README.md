@@ -42,7 +42,7 @@ Assets
 ```
 ---
 
-## **Naming Convention**
+
 
 Each object that has child data needs to be named without prefixes. For example, an object named `Car01` has a static mesh data named `SM_Car01`. This mesh data should not have instance numbering, so it doesn't need the `[Numbering]` affix. However, the object `Car01` itself can be instanced in some DCC applications, and the naming convention would be written as `Car01_001`. Notice that the `01` after the word "Car" is an archetype number. Another example: material instances like `MI_Table` use texture map data such as `T_Table_Normal.png`. There is a special case for 3D object that has dynamic mesh data, the mesh data in this case should use the object naming convention for example an object of `Human01` has a dynamic mesh data of `Human01`.
 
@@ -81,5 +81,4 @@ And here is how the data naming convention should be written:
 
 ---
 
-## **Asset Specification**
-
+## **Asset Specifications**
