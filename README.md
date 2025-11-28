@@ -83,15 +83,16 @@ And here is how the data naming convention should be written:
 
 ## **Asset Specifications**
 
-The naming convention for binaries file should be `[ObjectName].[extension]`
-mesh binaries publication,
+The naming convention for binaries file should be `[ObjectName].[extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_low` , `_high` , `_cage`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to have unique identifier.
+
+#### **mesh binaries publication**
 
 | Data | Purpose     | .blend | .fbx | .gltf | .obj | notes |
 | ---- | ----------- | :----: | :--: | :---: | :--: | ----- |
 | mesh | baking      |        |  ✓   |       |      |       |
 | mesh | publication |   ✓    |  ✓   |   ✓   |  ✓   |       |
 
-image binaries publication
+#### **image binaries publication**
 
 | Data                   | Purpose     | .png | .jpg | .webp | notes           |
 | ---------------------- | ----------- | :--: | :--: | :---: | --------------- |
