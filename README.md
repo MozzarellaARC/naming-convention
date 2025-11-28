@@ -5,7 +5,9 @@ A personal standardized naming convention for 3D related projects and Architectu
 ## **Table of Contents**
 
 1. [Directory Structure](#directory-structure)
-2. [Naming Conventions](#naming-conventions)
+2. [General Naming Conventions](#general-naming-conventions)
+    - [Special Case Naming Convention](#special-case-naming-conventions)
+    - [Prefixes by data type](#prefixes-by-data-type)
 3. [Asset Specifications](#asset-specifications)
 4. [Code Standards](#code-standards)
 5. [Version Control](#version-control)
@@ -17,9 +19,12 @@ A personal standardized naming convention for 3D related projects and Architectu
 
 ```
 Assets
+├─README.md
+├─workspace.blend
 ├─Art
 │  ├─Materials
 │  │  ├─MI_Table01_a
+│  │  │  └─T_Table_01_BaseColor.webp
 │  │  └─MI_Table01_b
 │  ├─Models
 │  │  ├─Table01_001.blend
@@ -27,9 +32,9 @@ Assets
 │  │  └─Human01_001.blend
 │  │     └─Human01
 │  └─Textures
-│     ├─Table_01_BaseColor.webp
-│     ├─Table_01_Normal.png
-│     └─Table_01_ORM.webp
+│     ├─T_Table_01_BaseColor.webp
+│     ├─T_Table_01_Normal.png
+│     └─T_Table_01_ORM.webp
 ├─Audio
 │  ├─Music
 │  └─Sound
@@ -43,7 +48,7 @@ Assets
 
 ---
 
-## **Asset Naming Convention**
+## **General Naming Conventions**
 
 Each object that has child data needs to be named without prefixes. For example, an object named `Car01` has a static mesh data named `SM_Car01`. This mesh data should not have instance numbering, so it doesn't need the `[Numbering]` affix. However, the object `Car01` itself can be instanced in some DCC applications, and the naming convention would be written as `Car01_001`. Notice that the `01` after the word "Car" is an archetype number. Another example: material instances like `MI_Table` use texture map data such as `T_Table_Normal.png`. There is a special case for 3D object that has dynamic mesh data, the mesh data in this case should use the object naming convention for example an object of `Human01` has a dynamic mesh data of `Human01`.
 
@@ -59,7 +64,7 @@ And here is how the data naming convention should be written:
 [Prefix]_[NameOfObject][ArchetypeNumbering] example: SM_Table01
 ```
 
-#### **Special Cases Naming Convention**
+#### **Special Case Naming Conventions**
 
 | Type           | Convention                                                   | Example      |
 | -------------- | ------------------------------------------------------------ | ------------ |
@@ -83,7 +88,7 @@ And here is how the data naming convention should be written:
 
 ## **Asset Specifications**
 
-The naming convention for binaries file should be `[ObjectName].[extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_low` , `_high` , `_cage`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to have unique identifier.
+The naming convention for binaries file should be `[ObjectName].[extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_low` , `_high` , `_cage` for example `table_low`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to be given unique identifier.
 
 #### **mesh binaries publication**
 
