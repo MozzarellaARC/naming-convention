@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Directory Structure and Naming Convention</title>
+
+        <!-- GitHub Markdown Dark CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown-dark.css"
+        />
+
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #0d1117;
+            }
+
+            .container {
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+            }
+
+            .markdown-body {
+                box-sizing: border-box;
+                min-width: 200px;
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 45px;
+            }
+
+            @media (max-width: 767px) {
+                .markdown-body {
+                    padding: 15px;
+                }
+                .container {
+                    padding: 15px;
+                }
+            }
+
+            .loading {
+                text-align: center;
+                padding: 50px;
+                color: #8b949e;
+                font-size: 1.2em;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+                    Arial, sans-serif;
+            }
+
+            .error {
+                background-color: #161b22;
+                border: 1px solid #30363d;
+                border-radius: 6px;
+                padding: 45px;
+                max-width: 980px;
+                margin: 0 auto;
+            }
+
+            .error h2 {
+                color: #f85149;
+                margin-bottom: 16px;
+            }
+
+            .error p {
+                color: #c9d1d9;
+                line-height: 1.5;
+                margin-bottom: 10px;
+            }
+
+            .error code {
+                background-color: rgba(110, 118, 129, 0.4);
+                border-radius: 6px;
+                padding: 3px 6px;
+                font-family:
+                    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+                    "Liberation Mono", monospace;
+            }
+
+            .error ul {
+                color: #c9d1d9;
+                margin-left: 20px;
+            }
+
+            .error li {
+                margin-bottom: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <article id="content" class="markdown-body loading">
+                Loading README...
+            </article>
+        </div>
+
+        <!-- Load markdown-it from CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js"></script>
+        <!-- Load markdown-it-anchor plugin -->
+        <script src="https://cdn.jsdelivr.net/npm/markdown-it-anchor@9/dist/markdownItAnchor.umd.js"></script>
+
+        <script>
+            // GitHub-style slug generation function
+            function githubSlugify(s) {
+                // Remove markdown formatting like ** and *
+                let slug = s.replace(/\*\*/g, "").replace(/\*/g, "");
+
+                // Convert to lowercase and replace spaces with hyphens
+                slug = slug
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^\w\s-]/g, "") // Remove special characters
+                    .replace(/[\s_]+/g, "-") // Replace spaces and underscores with hyphens
+                    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
+
+                return slug;
+            }
+
+            // Initialize markdown-it with GitHub-like options
+            const md = window
+                .markdownit({
+                    html: true,
+                    linkify: true,
+                    typographer: true,
+                    breaks: false,
+                })
+                .use(window.markdownItAnchor, {
+                    slugify: githubSlugify,
+                    permalink: false,
+                    level: [1, 2, 3, 4, 5, 6],
+                });
+
+            // Function to load and render README
+            async function loadReadme() {
+                const contentDiv = document.getElementById("content");
+
+                try {
+                    // Fetch the README.md file
+                    const response = await fetch("README.md");
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! status: ${response.status}`,
+                        );
+                    }
+
+                    // Get the markdown text
+                    const markdownText = await response.text();
+
+                    // Render markdown to HTML
+                    const htmlContent = md.render(markdownText);
+
+                    // Display the rendered HTML
+                    contentDiv.innerHTML = htmlContent;
+                    contentDiv.className = "markdown-body";
+                } catch (error) {
+                    console.error("Error loading README:", error);
+                    contentDiv.className = "error";
+                    contentDiv.innerHTML = `
+                    <h2>⚠️ Error Loading README</h2>
+                    <p><strong>Could not load README.md file:</strong> ${error.message}</p>
+                    <p>Make sure you're running this from a web server and that README.md exists in the same directory.</p>
+                    <hr style="border: 0; border-top: 1px solid #21262d; margin: 20px 0;">
+                    <p><strong>Quick Start Options:</strong></p>
+                    <ul>
+                        <li><strong>Python:</strong> <code>python -m http.server 8000</code></li>
+                        <li><strong>Node.js:</strong> <code>npx serve</code></li>
+                        <li><strong>VS Code:</strong> Install "Live Server" extension and click "Go Live"</li>
+                    </ul>
+                `;
+                }
+            }
+
+            // Load README when page loads
+            loadReadme();
+        </script>
+    </body>
+</html>
