@@ -9,9 +9,8 @@ A personal standardized naming convention for 3D related projects and Architectu
     - [Special Case Naming Convention](#special-case-naming-conventions)
     - [Prefixes by data type](#prefixes-by-data-type)
 3. [Asset Specifications](#asset-specifications)
-4. [Code Standards](#code-standards)
-5. [Version Control](#version-control)
-6. [Performance Guidelines](#performance-guidelines)
+    - [Mesh Binaries Publication](#mesh-binaries-publication)
+    - [Image binaries publication](#image-binaries-publication)
 
 ---
 
