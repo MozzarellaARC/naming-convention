@@ -1,6 +1,6 @@
-# **Project Structure and Naming Convention**
+# # **Project Structure and Naming Conve# **Project Structure and Naming Convention**
 
-A personal standardized naming convention for 3D related projects and Architectural engineering.
+A personal standardized naming convention for 3D related projects and Architectural engineering. Although this standardization very verbose, by all means will not replace the naming convention of a basic English. For example a project folder with the purpose to be read by the end user should be written like this `Reference Image`, contrary to the directory structure naming convention where it should be written as `ref` or `reference-image`
 
 ## **Table of Contents**
 
@@ -16,7 +16,7 @@ A personal standardized naming convention for 3D related projects and Architectu
 ---
 
 ## **Directory Structure**
-The naming convention for the directory use `kebab-case` , the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces. So if I have a folder with name User Application, it should be written as `user-application`. Another example is when creating a project any file that is not related to a framework or corporate requirements needs to be name with `snake_case`. This is how the directory structure would look like:
+The naming convention for the directory use `kebab-case` , the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if I have a folder with name User Application, it should be written as `user-application`. Another example is when creating a project any file that is not related to a framework or corporate requirements needs to be name with `snake_case`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image` This is how the directory structure would look like:
 
 ```
 example-project
@@ -33,9 +33,9 @@ example-project
 │  │  ├─T_Table_01_BaseColor.webp -> binary data
 │  │  ├─T_Table_01_Normal.png -> binary data
 │  │  └─T_Table_01_ORM.webp -> binary data
-│  └─texturing -> substance painter or marmoset toolbag
-      └─table.spp
-├─exports
+│  ├─texturing -> substance painter or marmoset toolbag
+│  │  └─table.spp
+│  └─exports
 ├─ref
 │  ├─perforated_metal.jpg- > binary data
 │  └─dimensions.pdf -> binary data
