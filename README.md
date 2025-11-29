@@ -29,12 +29,13 @@ example-project
 │  │  │  └─SM_Table01 -> binary data
 │  │  └─Human01_001.blend -> binary
 │  │     └─Human01 -> binary data
-│  └─textures
-│     ├─T_Table_01_BaseColor.webp -> binary data
-│     ├─T_Table_01_Normal.png -> binary data
-│     └─T_Table_01_ORM.webp -> binary data
+│  ├─textures
+│  │  ├─T_Table_01_BaseColor.webp -> binary data
+│  │  ├─T_Table_01_Normal.png -> binary data
+│  │  └─T_Table_01_ORM.webp -> binary data
+│  └─texturing -> substance painter or marmoset toolbag
+      └─table.spp
 ├─exports
-├─texturing -> substance painter or marmoset toolbag
 ├─ref
 │  ├─perforated_metal.jpg- > binary data
 │  └─dimensions.pdf -> binary data
