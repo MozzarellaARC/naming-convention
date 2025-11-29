@@ -1,10 +1,10 @@
-# **Directory Structure and Naming Convention**
+# **Project Structure and Naming Convention**
 
 A personal standardized naming convention for 3D related projects and Architectural engineering.
 
 ## **Table of Contents**
 
-1. [Directory Structure](#directory-structure)
+1. [Project Structure](#project-structure)
 2. [General Naming Conventions](#general-naming-conventions)
    - [Special Case Naming Convention](#special-case-naming-conventions)
    - [Prefixes by data type](#prefixes-by-data-type)
@@ -16,11 +16,37 @@ A personal standardized naming convention for 3D related projects and Architectu
 ---
 
 ## **Directory Structure**
+The naming convention for the directory use `kebab-case` , the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces. So if I have a folder with name User Application, it should be written as `user-application`. Another example is when creating a project any file that is not related to a framework or corporate requirements needs to be name with `snake_case`. This is how the directory structure would look like:
+
+```
+example-project
+├─README.md
+├─workspace.blend
+├─publish
+├─lib
+│  ├─models
+│  │  ├─Table01_001.blend -> binary
+│  │  │  └─SM_Table01 -> binary data
+│  │  └─Human01_001.blend -> binary
+│  │     └─Human01 -> binary data
+│  └─textures
+│     ├─T_Table_01_BaseColor.webp -> binary data
+│     ├─T_Table_01_Normal.png -> binary data
+│     └─T_Table_01_ORM.webp -> binary data
+├─exports
+├─texturing -> substance painter or marmoset toolbag
+├─ref
+│  ├─perforated_metal.jpg- > binary data
+│  └─dimensions.pdf -> binary data
+└─scripts
+    ├─PlayerController.cs -> C# standard naming convention
+    └─Scripts.cs -> C# standard naming convention
+```
+
+## **Project Structure**
 
 ```
 Assets
-├─README.md
-├─workspace.blend
 ├─Art
 │  ├─Materials
 │  │  ├─MI_Table01_a
@@ -37,6 +63,7 @@ Assets
 │     └─T_Table_01_ORM.webp
 ├─Audio
 │  ├─Music
+│  │  └─
 │  └─Sound
 └─Code
    ├─Scripts
@@ -88,6 +115,7 @@ And here is how the data naming convention should be written:
 | `M_`    | Material (Master) | M_Standard_PBR           |
 | `T_`    | Texture           | T_Concrete_BaseColor     |
 | `UV_`   | UV                | UV_Map                   |
+| `A_`    | Audio             | A_Background             |
 
 ---
 
