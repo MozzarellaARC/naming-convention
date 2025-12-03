@@ -1,4 +1,4 @@
-# # **Project Structure and Naming Conve# **Project Structure and Naming Convention**
+# **Project Structure and Naming Convention**
 
 A personal standardized naming convention for 3D related projects and Architectural engineering. Although this standardization very verbose, by all means will not replace the naming convention of a basic English. For example a project folder with the purpose to be read by the end user should be written like this `Reference Image`, contrary to the directory structure naming convention where it should be written as `ref` or `reference-image`
 
