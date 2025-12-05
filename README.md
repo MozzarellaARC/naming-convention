@@ -111,7 +111,7 @@ And here is how the data naming convention should be written:
 | ------- | ----------------- | ------------------------ |
 | `SM_`   | Static Mesh       | SM_Building_Skyscraper01 |
 | `SK_`   | Skeletal Mesh     | SK_Character_Detective   |
-| `ANIM_` | Animation         | ANIM_Human_Run_Forward   |
+| `ANIM_` | Animation         | ANIM_HumanRunForward     |
 | `MI_`   | Material Instance | MI_Metal_RustySteel      |
 | `M_`    | Material (Master) | M_Standard_PBR           |
 | `T_`    | Texture           | T_Concrete_BaseColor     |
@@ -152,3 +152,17 @@ Naming Convention are based off of Unity and Unreal Engine assets naming convent
 
 [Unreal Engine Recommended Asset Naming Convention](https://dev.epicgames.com/documentation/en-us/unreal-engine/recommended-asset-naming-conventions-in-unreal-engine-projects)\
 [Best practices for organizing your Unity project](https://unity.com/how-to/organizing-your-project)
+
+## Architecture
+
+When we explicitly refer to *“Architecture”* we mean the professional discipline of building design, rather than the concept of “architecture” as used in computer science.
+
+For architectural projects, naming conventions should be as human-readable as possible. Binary files and related data should follow the structure:
+
+[Noun][Whitespace][Adjective][Whitespace][Extra-Adjective]
+
+Every first letter of each identifier should be capitalized. If the [Adjective] contains multiple words, it must use a hyphen - as punctuation. The adjectives should be ordered from the most general category to the more specific. Below is an example of this convention for architecture-related binaries and data:
+
+```Power Socket Type-F```
+
+In this example, `Power` is the Noun, `Socket` is the general-category Adjective, and `Type-F` is the specific-category [ Extra-Adjective ]. Notice that `Type-F` comes after `Socket` because Socket identifies the broader category. At this category level, there are only two possibilities: `Socket` (power-source input) and `Plug”`(power-source output), while connector types can vary.
