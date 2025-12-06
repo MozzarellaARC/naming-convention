@@ -1,6 +1,6 @@
 # **Project Structure and Naming Convention**
 
-A personal standardized naming convention for 3D related projects and Architectural engineering. Although this standardization very verbose, by all means will not replace the naming convention of a basic English. For example a project folder with the purpose to be read by the end user should be written like this `Reference Image`, contrary to the directory structure naming convention where it should be written as `ref` or `reference-image`
+A personal standardized naming convention for 3D related projects and Architectural engineering. Although this standardization very verbose, by all means will not replace the naming convention of a basic English. For example, a project folder with the purpose to be read by the end user should be written like this `Reference Image`, contrary to the directory structure naming convention where it should be written as `ref` or `reference-image`
 
 ## **Table of Contents**
 
@@ -16,6 +16,7 @@ A personal standardized naming convention for 3D related projects and Architectu
 ---
 
 ## **Data Structure**
+
 In most DCC application, it is common for a data comprise of object and the actual data, for example a data of object `Apple` contains a mesh data of `Apple` and material data of `MI_AppleRed`. This object data content can change, like for example an object of `Apple` may have mesh data of `Orange` and material data of `MI_BananaYellow`.
 
 Now the naming convention for this data structure in general use `PascalCase` while the binary data that is referenced by the object use `Title_Snake_Case`:
@@ -26,6 +27,7 @@ Apple
     └─T_AppleRed_Normal.jpeg -> image binary data
 
 The prefix T_ and the suffix _Normal will be explain later on in the documentation. Please keep in mind that each DCC has different patter when dealing with instances, like for example duplicating `Apple` object inside Unity engine will give (n) suffix while in Blender gives .n suffix.
+
 ```
 Unity
 Apple (1)
@@ -39,6 +41,7 @@ etc.
 ```
 
 ## **Directory Structure**
+
 The naming convention for the directory use `kebab-case`, the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if I have a folder with name User Application, it should be written as `user-application`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image`. Binary data filenames (like textures, models, and reference materials) should use `Title_Snake_Case` regardless of their folder location. This is how the directory structure would look like:
 
 ```
@@ -120,7 +123,7 @@ And here is how the data naming convention should be written:
 [Prefix]_[ObjectName][ArchetypeNumbering] example: SM_Table01
 ```
 
-#### **Special Case Naming Conventions**
+### **Special Case Naming Conventions**
 
 | Type           | Convention                                                 | Example      |
 | -------------- | ---------------------------------------------------------- | ------------ |
@@ -145,9 +148,9 @@ And here is how the data naming convention should be written:
 
 ## **Asset Specifications**
 
-Binary files should use `Title_Snake_Case` naming convention with the format `[ObjectName].[Extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_Low`, `_High`, `_Cage` for example `Table_Low.fbx`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to be given unique identifier.
+Binary files should use `Title_Snake_Case` naming convention with the format `[ObjectName].[Extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_low`, `_high`, `_cage` for example `Table_low.fbx`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to be given unique identifier.
 
-#### **Mesh Binaries Publication**
+### **Mesh Binaries Publication**
 
 | Data | Purpose     | .blend | .fbx | .gltf | .obj | notes |
 | ---- | ----------- | :----: | :--: | :---: | :--: | ----- |
@@ -171,6 +174,7 @@ Binary files should use `Title_Snake_Case` naming convention with the format `[O
 ---
 
 #### *Footnote*
+
 Naming Convention are based off of Unity and Unreal Engine assets naming convention:
 
 [Unreal Engine Recommended Asset Naming Convention](https://dev.epicgames.com/documentation/en-us/unreal-engine/recommended-asset-naming-conventions-in-unreal-engine-projects)\
