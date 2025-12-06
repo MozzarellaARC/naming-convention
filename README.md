@@ -15,6 +15,29 @@ A personal standardized naming convention for 3D related projects and Architectu
 
 ---
 
+## ***Data Structure**
+In most DCC application, it is common for a data comprise of object and the actual data, for example a data of object `Apple` contains a mesh data of `Apple` and material data of `Apple_Red`. This object data content can change, like for example an object of `Apple` may have mesh data of `Orange` and material data of `BananaYellow`.
+
+Now the naming convention for this data structure in general use `PascalCase` while the binary data that is referenced by the object use `Title_Snake_Case`:
+
+Apple
+├─Apple -> mesh data
+└─AppleRed -> material data
+    └─T_AppleRed_Normal.jpeg -> image binary data
+
+The prefix T_ and the suffix _Normal will be explain later on in the documentation. Please keep in mind that each DCC has different patter when dealing with instances, like for example duplicating `Apple` object inside Unity engine will give (n) suffix while in Blender gives .n suffix.
+```
+Unity
+Apple (1)
+Apple (2)
+etc.
+
+Blender
+Apple.001
+Apple.002
+etc.
+```
+
 ## **Directory Structure**
 The naming convention for the directory use `kebab-case` , the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if I have a folder with name User Application, it should be written as `user-application`. Another example is when creating a project any file that is not related to a framework or corporate requirements needs to be name with `snake_case`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image` This is how the directory structure would look like:
 
@@ -48,16 +71,18 @@ example-project
 
 ```
 Assets
-├─Art
+├─Art -> should be the unique identifier
 │  ├─Materials
-│  │  ├─MI_Table01_a
+│  │  ├─Table01_a -> suffix _a is a material sequence
 │  │  │  └─T_Table_01_BaseColor.webp
-│  │  └─MI_Table01_b
+│  │  └─Table01_b -> suffix _b is a material sequence
 │  ├─Models
-│  │  ├─Table01_001.blend
-│  │  │  └─SM_Table01
-│  │  └─Human01_001.blend
+│  │  ├─Table01.blend
+│  │  │  └─Table01
+│  │  │     └─SM_Table01
+│  │  └─Human01.blend
 │  │     └─Human01
+│  │        └─Human01
 │  └─Textures
 │     ├─T_Table_01_BaseColor.webp
 │     ├─T_Table_01_Normal.png
