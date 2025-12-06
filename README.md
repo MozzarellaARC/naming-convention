@@ -7,22 +7,22 @@ A personal standardized naming convention for 3D related projects and Architectu
 1. [Project Structure](#project-structure)
 2. [General Naming Conventions](#general-naming-conventions)
    - [Special Case Naming Convention](#special-case-naming-conventions)
-   - [Prefixes by data type](#prefixes-by-data-type)
+   - [Prefixes by Data Type](#prefixes-by-data-type)
 3. [Asset Specifications](#asset-specifications)
    - [Mesh Binaries Publication](#mesh-binaries-publication)
-   - [Image binaries publication](#image-binaries-publication)
+   - [Image Binaries Publication](#image-binaries-publication)
 4. [Footnote](#footnote)
 
 ---
 
-## ***Data Structure**
-In most DCC application, it is common for a data comprise of object and the actual data, for example a data of object `Apple` contains a mesh data of `Apple` and material data of `Apple_Red`. This object data content can change, like for example an object of `Apple` may have mesh data of `Orange` and material data of `BananaYellow`.
+## **Data Structure**
+In most DCC application, it is common for a data comprise of object and the actual data, for example a data of object `Apple` contains a mesh data of `Apple` and material data of `MI_AppleRed`. This object data content can change, like for example an object of `Apple` may have mesh data of `Orange` and material data of `MI_BananaYellow`.
 
 Now the naming convention for this data structure in general use `PascalCase` while the binary data that is referenced by the object use `Title_Snake_Case`:
 
 Apple
 ├─Apple -> mesh data
-└─AppleRed -> material data
+└─MI_AppleRed -> material instance data
     └─T_AppleRed_Normal.jpeg -> image binary data
 
 The prefix T_ and the suffix _Normal will be explain later on in the documentation. Please keep in mind that each DCC has different patter when dealing with instances, like for example duplicating `Apple` object inside Unity engine will give (n) suffix while in Blender gives .n suffix.
@@ -39,7 +39,7 @@ etc.
 ```
 
 ## **Directory Structure**
-The naming convention for the directory use `kebab-case` , the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if I have a folder with name User Application, it should be written as `user-application`. Another example is when creating a project any file that is not related to a framework or corporate requirements needs to be name with `snake_case`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image` This is how the directory structure would look like:
+The naming convention for the directory use `kebab-case`, the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if I have a folder with name User Application, it should be written as `user-application`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image`. Binary data filenames (like textures, models, and reference materials) should use `Title_Snake_Case` regardless of their folder location. This is how the directory structure would look like:
 
 ```
 example-project
@@ -48,20 +48,21 @@ example-project
 ├─publish
 ├─lib
 │  ├─models
-│  │  ├─Table01_001.blend -> binary
+│  │  ├─Table01.blend -> binary
 │  │  │  └─SM_Table01 -> binary data
 │  │  └─Human01_001.blend -> binary
 │  │     └─Human01 -> binary data
 │  ├─textures
-│  │  ├─T_Table_01_BaseColor.webp -> binary data
-│  │  ├─T_Table_01_Normal.png -> binary data
-│  │  └─T_Table_01_ORM.webp -> binary data
+│  │  ├─T_Table01_BaseColor.webp -> binary data
+│  │  ├─T_Table01_Normal.png -> binary data
+│  │  └─T_Table01_ORM.webp -> binary data
 │  ├─texturing -> substance painter or marmoset toolbag
-│  │  └─table.spp
+│  │  └─Table_Texturing.spp
 │  └─exports
+│     └─Table01.fbx
 ├─ref
-│  ├─perforated_metal.jpg- > binary data
-│  └─dimensions.pdf -> binary data
+│  ├─PerforatedMetal.jpg -> binary data
+│  └─Dimensions.pdf -> binary data
 └─scripts
     ├─PlayerController.cs -> C# standard naming convention
     └─Scripts.cs -> C# standard naming convention
@@ -74,22 +75,22 @@ Assets
 ├─Art -> should be the unique identifier
 │  ├─Materials
 │  │  ├─Table01_a -> suffix _a is a material sequence
-│  │  │  └─T_Table_01_BaseColor.webp
+│  │  │  └─T_Table01_a_BaseColor.webp
 │  │  └─Table01_b -> suffix _b is a material sequence
 │  ├─Models
 │  │  ├─Table01.blend
 │  │  │  └─Table01
 │  │  │     └─SM_Table01
 │  │  └─Human01.blend
-│  │     └─Human01
-│  │        └─Human01
+│  │     └─Human01 -> object
+│  │        └─Human01 -> mesh data
 │  └─Textures
-│     ├─T_Table_01_BaseColor.webp
-│     ├─T_Table_01_Normal.png
-│     └─T_Table_01_ORM.webp
+│     ├─T_Table01_BaseColor.webp
+│     ├─T_Table01_Normal.png
+│     └─T_Table01_ORM.webp
 ├─Audio
 │  ├─Music
-│  │  └─
+│  │  └─Background.wav
 │  └─Sound
 └─Code
    ├─Scripts
@@ -103,12 +104,9 @@ Assets
 
 ## **General Naming Conventions**
 
-The naming convention for the working DCC related file should be:
-```
-[ObjectName].[Extension]
-```
+The naming convention for working DCC object data uses `PascalCase`, while binary data files use `Title_Snake_Case`. Objects and their child data follow a hierarchical structure where prefixes identify data types.
 
-Each object that has child data needs to be named without prefixes. For example, an object named `Car01` has a static mesh data named `SM_Car01`. This mesh data should not have instance numbering, so it doesn't need the `[Numbering]` affix. However, the object `Car01` itself can be instanced in some DCC applications, and the naming convention would be written as `Car01_001`. Notice that the `01` after the word "Car" is an archetype number. Another example: material instances like `MI_Table` use texture map data such as `T_Table_Normal.png`. There is a special case for 3D object that has dynamic mesh data, the mesh data in this case should use the object naming convention for example an object of `Human01` has a dynamic mesh data of `Human01`.
+Each object that has child data needs to be named with appropriate prefixes. For example, an object named `Car01` has a static mesh data named `SM_Car01`. This mesh data should not have instance numbering, so it doesn't need the `[Numbering]` affix. However, the object `Car01` itself can be instanced in some DCC applications, and the naming convention would be written as `Car01_001`. Notice that the `01` after the word "Car" is an archetype number. Another example: material instances like `MI_Table` use texture map data such as `T_Table_Normal.png`. There is a special case for 3D object that has dynamic mesh data, the mesh data in this case should use the object naming convention for example an object of `Human01` has a dynamic mesh data of `Human01`.
 
 Here is how the object naming convention should be written:
 
@@ -147,16 +145,16 @@ And here is how the data naming convention should be written:
 
 ## **Asset Specifications**
 
-The naming convention for binaries file should be `[ObjectName].[Extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_low` , `_high` , `_cage` for example `table_low`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to be given unique identifier.
+Binary files should use `Title_Snake_Case` naming convention with the format `[ObjectName].[Extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_Low`, `_High`, `_Cage` for example `Table_Low.fbx`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to be given unique identifier.
 
-#### **mesh binaries publication**
+#### **Mesh Binaries Publication**
 
 | Data | Purpose     | .blend | .fbx | .gltf | .obj | notes |
 | ---- | ----------- | :----: | :--: | :---: | :--: | ----- |
 | mesh | baking      |        |  ✓   |       |      |       |
 | mesh | publication |   ✓    |  ✓   |   ✓   |  ✓   |       |
 
-#### **image binaries publication**
+#### **Image Binaries Publication**
 
 | Data                   | Purpose     | .png | .jpg | .webp | notes           |
 | ---------------------- | ----------- | :--: | :--: | :---: | --------------- |
@@ -190,4 +188,4 @@ Every first letter of each identifier should be capitalized. If the [Adjective] 
 
 ```Power Socket Type-F```
 
-In this example, `Power` is the Noun, `Socket` is the general-category Adjective, and `Type-F` is the specific-category [ Extra-Adjective ]. Notice that `Type-F` comes after `Socket` because Socket identifies the broader category. At this category level, there are only two possibilities: `Socket` (power-source input) and `Plug”`(power-source output), while connector types can vary.
+In this example, `Power` is the Noun, `Socket` is the general-category Adjective, and `Type-F` is the specific-category [ Extra-Adjective ]. Notice that `Type-F` comes after `Socket` because Socket identifies the broader category. At this category level, there are only two possibilities: `Socket` (power-source input) and `Plug` (power-source output), while connector types can vary.
