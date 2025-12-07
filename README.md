@@ -6,12 +6,10 @@ With all of this in mind, the community uses `PascalCase` or `PascalCase` with a
 
 ## **Table of Contents**
 
-1. [Data Structure](#data-structure)
-2. [Directory Structure](#directory-structure)
+1. [General Naming Conventions](#general-naming-conventions)
+2. [Asset Workspace](#asset-workspace)
 3. [Project Structure](#project-structure)
-4. [General Naming Conventions](#general-naming-conventions)
-   - [Special Case Naming Conventions](#special-case-naming-conventions)
-   - [Prefixes by Data Type](#prefixes-by-data-type)
+4. [Data Structure](#data-structure)
 5. [Asset Specifications](#asset-specifications)
    - [Mesh Binaries Publication](#mesh-binaries-publication)
    - [Image Binaries Publication](#image-binaries-publication)
@@ -20,48 +18,35 @@ With all of this in mind, the community uses `PascalCase` or `PascalCase` with a
 
 ---
 
-## **Data Structure**
+## **General Naming Conventions**
 
-In most DCC applications, it is common for an object to reference several data blocks—for example, an object named `Apple` may reference mesh data also named `Apple` and material data named `MI_AppleRed`. Some DCCs allow these data block names to be mismatched; for example, an object named `Apple` could use mesh data named `Orange` and material data named `MI_BananaYellow`. However, naming conventions should not depend on this permissiveness.
+This documentation uses `PascalCase` as the foundation for all naming conventions. Objects and their associated data blocks follow a hierarchical relationship where prefixes and suffixes provide type identification and variant information.
 
-In general, object names typically use `PascalCase`, while the underlying data blocks referenced by those objects also use `PascalCase` with affixes applied, such as prefixes for meshes and materials.
+### **Core Concepts**
 
-The naming convention for this data structure uses `PascalCase` for objects while the data blocks referenced by the object use `PascalCase` with added prefixes:
+**Archetype vs. Instance Numbering:**
+- **Archetype numbering** (e.g., `01`, `02`) - Identifies different design variants of the same object type. Example: `Car01` might be a sedan while `Car02` is a truck.
+- **Instance numbering** (e.g., `_001`, `_002`) - Identifies duplicate copies of the same archetype within a scene. Used for objects but not for data blocks.
 
-```
-Apple
-├─SM_Apple → static mesh data
-└─MI_AppleRed → material instance data
-    └─T_AppleRed_Normal.png → texture binary data
-```
+**Hierarchical Data Relationship:**
+Objects serve as containers that reference underlying data blocks. These data blocks use prefixes to identify their type (mesh, material, texture, etc.) and maintain a naming relationship with their parent object.
 
-The prefix `T_` identifies texture data, and the suffix `_Normal` indicates a normal map texture type (see [Image Binaries Publication](#image-binaries-publication) for all texture suffixes).
-
-Please keep in mind that each DCC applies its own pattern when handling duplicated instances; for example, duplicating the `Apple` object in Unity results in a `(1)`, `(2)`, `(3)` suffix, while Blender uses `.001`, `.002`, `.003`. Here is the example:
-
-```
-Unity:
-Apple (1)
-Apple (2)
-etc.
-
-Blender:
-Apple.001
-Apple.002
-etc.
-```
-
-**Note:** These auto-generated instance suffixes are DCC-specific behaviors and are not part of this naming convention standard.
+**Naming Patterns:**
+- **Objects** - Use descriptive names with archetype numbers and optional instance suffixes
+- **Data Blocks** - Use prefixes followed by the parent object's name and archetype number
+- **Binaries** - Use the same naming as data blocks with appropriate file extensions
 
 ---
 
-## **Directory Structure**
+## **Asset Workspace**
+
+This section describes the folder organization for asset creation projects—the source workspace where artists and technical artists develop 3D models, textures, and related content before importing them into a game engine or other application.
 
 The naming convention for the top-level project directory uses `kebab-case`. The use of whitespace to name directories is problematic because some string parsers ignore whitespaces, which makes using whitespaces redundant and harder to organize with scripts. So if, for example, a folder is named "User Application", it should be written as `user-application`.
 
-Although the top-level directory uses `kebab-case` for clarity and project identity, applying the same rule to sub-folders creates unnecessary visual noise and complicates script-based parsing of directory paths. Sub-folders represent categorical namespaces (e.g., `ref`, `lib`, `scripts`) and rarely require multi-word descriptors. Using short, single-term names keeps the hierarchy easy to scan and reduces ambiguity in automated tooling. Therefore, the recommended way of naming sub-folders is by using single-word terms—for example, use `ref` instead of `reference-image`.
+Although the top-level directory uses `kebab-case` for clarity and project identity, applying the same rule to sub-folders creates unnecessary visual noise and complicates script-based parsing of directory paths. Sub-folders represent categorical namespaces (e.g., `ref`, `lib`, `scripts`) and rarely require multi-word descriptors. Using short, single-word names keeps the hierarchy easy to scan and reduces ambiguity in automated tooling. Therefore, the recommended way of naming sub-folders is by using single-word terms—for example, use `ref` instead of `reference-image`.
 
-Binary data filenames (like textures, models, and reference materials) should use `PascalCase` regardless of their folder location. This is how the directory structure would look:
+Binary data filenames (like textures, models, and reference materials) should use `PascalCase` regardless of their folder location. This is how an asset creation project directory structure would look:
 
 ```
 example-project
@@ -94,21 +79,29 @@ example-project
 
 ## **Project Structure**
 
-This project structure is designed specifically for the Unity Game Engine:
+This section demonstrates the standard folder organization within a Unity Game Engine project. Unlike the [Asset Workspace](#asset-workspace) which organizes source asset creation files, the Project Structure represents how assets are organized within Unity's `Assets` folder after import.
+
+Unity projects follow engine-specific conventions where directories use either `PascalCase` or single-term names with capitalized first letters (e.g., `Art`, `Audio`, `Code`), rather than the `kebab-case` used in source asset directories.
+
+**Key Differences:**
+- **Asset Workspace** = source asset creation workspace (uses `kebab-case` for top-level, single terms for sub-folders)
+- **Project Structure** = Unity's `Assets` folder organization after import (uses `PascalCase`)
+
+The example below shows how assets are categorized by type within Unity's `Assets` directory. This structure is widely adopted across Unity projects for consistency and ease of navigation:
 
 ```
 Assets
-├─Art → should be the unique identifier
+├─Art → primary content folder (models, materials, textures)
 │  ├─Materials
-│  │  ├─Table01_a → suffix _a is a material sequence
+│  │  ├─Table01_a → material variant A
 │  │  │  └─T_Table01_a_BaseColor.webp
-│  │  └─Table01_b → suffix _b is a material sequence
+│  │  └─Table01_b → material variant B
 │  ├─Models
 │  │  ├─Table01.blend
-│  │  │  └─Table01
-│  │  │     └─SM_Table01
+│  │  │  └─Table01 → object container
+│  │  │     └─SM_Table01 → static mesh data
 │  │  └─Human01.blend
-│  │     └─Human01 → object
+│  │     └─Human01 → object container
 │  │        └─SK_Human01 → skeletal mesh data
 │  └─Textures
 │     ├─T_Table01_BaseColor.webp
@@ -126,23 +119,22 @@ Assets
       └─MaterialShaders.hlsl
 ```
 
+**Note:** The `Art` folder serves as the primary identifier for visual content. Some teams may use alternative top-level names like `Graphics`, `Visuals`, or `Game` depending on project conventions.
+
 ---
 
-## **General Naming Conventions**
+## **Data Structure**
 
-The naming convention for DCC-specific object data and binaries uses `PascalCase`. Objects and their child data follow a hierarchical structure where prefixes identify data types.
+In most DCC applications, an object references several data blocks. For example, an object named `Apple` may reference mesh data and material data. The naming convention uses `PascalCase` for objects while data blocks use `PascalCase` with prefixes:
 
-Child data blocks must be named with appropriate prefixes. For example, an object named `Car01` has static mesh data named `SM_Car01`. Notice that the `01` after the word "Car" is an archetype number that identifies which design variant of "Car" this is (e.g., `Car01` might be a sedan, `Car02` might be a truck).
+```
+Apple
+├─SM_Apple → static mesh data
+└─MI_AppleRed → material instance data
+    └─T_AppleRed_Normal.png → texture binary data
+```
 
-**Instance vs. Archetype Numbering:**
-- **Archetype numbering** (e.g., `01`, `02`) identifies different design variants and is part of the naming convention
-- **Instance numbering** (e.g., `_001`, `_002`) identifies duplicates of the same design and may be used for scene objects but not for data blocks
-
-Another example: Material instances like `MI_Table01_a` use texture map data such as `T_Table01_Normal.png`. 
-
-**Special case for skeletal meshes:** Objects with skeletal mesh data (rigged characters or animated objects) use the `SK_` prefix. For example, an object named `Human01` has skeletal mesh data named `SK_Human01`. Skeletal meshes differ from static meshes because they contain bone/armature data and are intended for animation.
-
-### **Object Naming Convention**
+### **Object Naming Pattern**
 
 ```
 [ObjectName][ArchetypeNumbering]_[InstanceNumbering]
@@ -153,7 +145,7 @@ Another example: Material instances like `MI_Table01_a` use texture map data suc
 - `01` = archetype number (design variant)
 - `_001` = instance number (optional, for scene duplicates)
 
-### **Data Block Naming Convention**
+### **Data Block Naming Pattern**
 
 ```
 [Prefix]_[ObjectName][ArchetypeNumbering]
@@ -164,7 +156,25 @@ Another example: Material instances like `MI_Table01_a` use texture map data suc
 - `Table` = object name
 - `01` = archetype number
 
-Data blocks always include the archetype number to match their parent object, but never include instance numbering.
+Child data blocks must be named with appropriate prefixes. An object named `Car01` has static mesh data named `SM_Car01`. Data blocks always include the archetype number to match their parent object, but never include instance numbering.
+
+**Special case for skeletal meshes:** Objects with rigged/animated mesh data use the `SK_` prefix. For example, `Human01` has skeletal mesh data `SK_Human01`. Skeletal meshes contain bone/armature data for animation, unlike static meshes which are rigid.
+
+### **DCC Instance Suffixes**
+
+Each DCC auto-generates instance suffixes differently when duplicating objects:
+
+```
+Unity:
+Apple (1)
+Apple (2)
+
+Blender:
+Apple.001
+Apple.002
+```
+
+**Note:** These auto-generated suffixes are DCC-specific behaviors and not part of this naming standard.
 
 ---
 
@@ -175,7 +185,7 @@ Data blocks always include the archetype number to match their parent object, bu
 | `UV`       | UV_[Identifier]_[NumericalSequence]                        | UV_Map_001   |
 | `Material` | MI/M_[ObjectName][ArchetypeNumbering]_[AlphabeticSequence] | MI_Table01_a |
 
-**Material Sequence Explanation:** The alphabetic sequence (e.g., `_a`, `_b`, `_c`) is used when a single object has multiple material variations. For example, `MI_Table01_a` might be a wood finish, while `MI_Table01_b` might be a metal finish for the same table design.
+**Material Sequence:** Alphabetic suffixes (`_a`, `_b`, `_c`) identify material variations for the same object. Example: `MI_Table01_a` = wood finish, `MI_Table01_b` = metal finish.
 
 ---
 
@@ -247,7 +257,7 @@ T_[ObjectName][ArchetypeNumbering]_[TextureType].[Extension]
 
 ## **Architecture Projects**
 
-When we explicitly refer to *"Architecture"* or *Architectural*, we mean the professional discipline of building design, rather than the concept of "architecture" as used in computer science.
+When we explicitly refer to *"Architecture"*, we mean the professional discipline of building design, rather than the concept of "architecture" as used in computer science.
 
 For architectural projects, naming conventions should prioritize human readability over strict technical formatting. Binary files and related data should follow the structure:
 
