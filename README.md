@@ -18,27 +18,33 @@ With all of this in mind, the community uses `PascalCase` or `PascalCase` with a
 
 ---
 
-## **General Naming Conventions**
+## **1. General Naming Conventions**
 
 This documentation uses `PascalCase` as the foundation for all naming conventions. Objects and their associated data blocks follow a hierarchical relationship where prefixes and suffixes provide type identification and variant information.
 
-### **Core Concepts**
+### **a. Archetype vs. Instance Numbering:**
+- Archetype numbering (e.g., `01`, `02`) - Identifies different design variants of the same object type. Example: `Car01` might be a sedan while `Car02` is a truck.
+- Instance numbering: (e.g., `_001`, `_002`) - Identifies duplicate copies of the same archetype within a scene. Used for objects but not for data blocks.
 
-**Archetype vs. Instance Numbering:**
-- **Archetype numbering** (e.g., `01`, `02`) - Identifies different design variants of the same object type. Example: `Car01` might be a sedan while `Car02` is a truck.
-- **Instance numbering** (e.g., `_001`, `_002`) - Identifies duplicate copies of the same archetype within a scene. Used for objects but not for data blocks.
-
-**Hierarchical Data Relationship:**
+### **b. Hierarchical Data Relationship:**
 Objects serve as containers that reference underlying data blocks. These data blocks use prefixes to identify their type (mesh, material, texture, etc.) and maintain a naming relationship with their parent object.
 
-**Naming Patterns:**
-- **Objects** - Use descriptive names with archetype numbers and optional instance suffixes
-- **Data Blocks** - Use prefixes followed by the parent object's name and archetype number
-- **Binaries** - Use the same naming as data blocks with appropriate file extensions
+### **c. Naming Patterns:**
+- Objects - Use descriptive names with archetype numbers and optional instance suffixes
+- Data Blocks - Use prefixes followed by the parent object's name and archetype number
+- Binaries - Use the same naming as data blocks with appropriate file extensions
+
+**Quick Reference:**
+
+| Component    | Uses Archetype | Uses Instance | Example          |
+| ------------ | -------------- | ------------- | ---------------- |
+| Object       | ✓              | ✓ (optional)  | Table01_001      |
+| Data Block   | ✓              | ✗             | SM_Table01       |
+| Binary File  | ✓              | ✗             | Table01.blend    |
 
 ---
 
-## **Asset Workspace**
+## **2. Asset Workspace**
 
 This section describes the folder organization for asset creation projects—the source workspace where artists and technical artists develop 3D models, textures, and related content before importing them into a game engine or other application.
 
@@ -46,7 +52,7 @@ The naming convention for the top-level project directory uses `kebab-case`. The
 
 Although the top-level directory uses `kebab-case` for clarity and project identity, applying the same rule to sub-folders creates unnecessary visual noise and complicates script-based parsing of directory paths. Sub-folders represent categorical namespaces (e.g., `ref`, `lib`, `scripts`) and rarely require multi-word descriptors. Using short, single-word names keeps the hierarchy easy to scan and reduces ambiguity in automated tooling. Therefore, the recommended way of naming sub-folders is by using single-word terms—for example, use `ref` instead of `reference-image`.
 
-Binary data filenames (like textures, models, and reference materials) should use `PascalCase` regardless of their folder location. This is how an asset creation project directory structure would look:
+Binary data filenames use `PascalCase` regardless of their folder location. This is how an asset creation project directory structure would look:
 
 ```
 example-project
@@ -77,7 +83,7 @@ example-project
 
 ---
 
-## **Project Structure**
+## **3. Project Structure**
 
 This section demonstrates the standard folder organization within a Unity Game Engine project. Unlike the [Asset Workspace](#asset-workspace) which organizes source asset creation files, the Project Structure represents how assets are organized within Unity's `Assets` folder after import.
 
@@ -123,21 +129,42 @@ Assets
 
 ---
 
-## **Data Structure**
+## **4. Data Structure**
 
-In most DCC applications, an object references several data blocks. For example, an object named `Apple` may reference mesh data and material data. The naming convention uses `PascalCase` for objects while data blocks use `PascalCase` with prefixes:
+### **a. Binary Naming Conventions**
+
+Binary files follow `PascalCase` naming conventions. When working with assets that have multiple variants or archetypes, append a two-digit numeric suffix directly to the name without any separator. For assets that require additional identifiers beyond the base name, use an underscore (`_`) to separate these identifiers.
+
+**Optional Versioning:** Version numbers can be added for specific workflow scenarios (such as iterative prototypes or archived assets). When used, they should be separated by underscores and follow semantic versioning format (MAJOR.MINOR.PATCH). This is not required for standard production assets.
+
+**Binary Format Examples**
+
+| Type                                  | Format                                   | Example                             |
+| ------------------------------------- | ---------------------------------------- | ----------------------------------- |
+| Simple assets                         | `AssetName.extension`                    | `ApplePie.blend`                    |
+| Assets with archetypes/variants       | `AssetName##.extension`                  | `ApplePie01.blend`                  |
+| Assets with identifiers               | `AssetName##_Identifier.extension`       | `ApplePie01_Prototype.blend`        |
+| Versioned assets (optional)           | `AssetName##_Identifier_vX.Y.Z.extension`| `ApplePie01_Prototype_v1.0.0.blend` |
+
+**Note:** The `##` represents a two-digit archetype number (01, 02, 03, etc.).
+
+---
+
+### **b. Object and Data Block Structure**
+
+In most DCC applications, an object references several data blocks. For example, an object named `Apple01` may reference mesh data `SM_Apple01` and material data `MI_Apple01_a`:
 
 ```
-Apple
-├─SM_Apple → static mesh data
-└─MI_AppleRed → material instance data
-    └─T_AppleRed_Normal.png → texture binary data
+Apple01
+├─SM_Apple01 → static mesh data
+└─MI_Apple01_a → material instance data
+    └─T_Apple01_BaseColor.webp → texture binary data
 ```
 
-### **Object Naming Pattern**
+**Object Naming Pattern**
 
 ```
-[ObjectName][ArchetypeNumbering]_[InstanceNumbering]
+ObjectName##_###
 ```
 
 **Example:** `Table01_001`
@@ -145,10 +172,10 @@ Apple
 - `01` = archetype number (design variant)
 - `_001` = instance number (optional, for scene duplicates)
 
-### **Data Block Naming Pattern**
+**Data Block Naming Pattern**
 
 ```
-[Prefix]_[ObjectName][ArchetypeNumbering]
+Prefix_ObjectName##
 ```
 
 **Example:** `SM_Table01`
@@ -160,7 +187,9 @@ Child data blocks must be named with appropriate prefixes. An object named `Car0
 
 **Special case for skeletal meshes:** Objects with rigged/animated mesh data use the `SK_` prefix. For example, `Human01` has skeletal mesh data `SK_Human01`. Skeletal meshes contain bone/armature data for animation, unlike static meshes which are rigid.
 
-### **DCC Instance Suffixes**
+---
+
+### **c. DCC Instance Suffixes**
 
 Each DCC auto-generates instance suffixes differently when duplicating objects:
 
@@ -178,35 +207,37 @@ Apple.002
 
 ---
 
-### **Special Case Naming Conventions**
+### **7. Special Case Naming Conventions**
 
-| Type       | Convention                                                 | Example      |
-| ---------- | ---------------------------------------------------------- | ------------ |
-| `UV`       | UV_[Identifier]_[NumericalSequence]                        | UV_Map_001   |
-| `Material` | MI/M_[ObjectName][ArchetypeNumbering]_[AlphabeticSequence] | MI_Table01_a |
+| Type       | Format                            | Example      | Notes                                                                    |
+| ---------- | --------------------------------- | ------------ | ------------------------------------------------------------------------ |
+| `UV`       | `UV_Identifier_###`               | `UV_Map_001` | Identifier typically describes UV purpose (Map, Lightmap, etc.)          |
+| `Material` | `MI/M_ObjectName##_AlphaSequence` | `MI_Table01_a` | Alphabetic suffix (_a, _b, _c) identifies material variations |
 
 **Material Sequence:** Alphabetic suffixes (`_a`, `_b`, `_c`) identify material variations for the same object. Example: `MI_Table01_a` = wood finish, `MI_Table01_b` = metal finish.
 
+**UV Maps:** The numerical sequence allows multiple UV channels for the same object. The identifier describes the UV purpose (e.g., `UV_Lightmap_001` for lightmap UVs, `UV_Map_001` for standard texture coordinates).
+
 ---
 
-### **Prefixes by Data Type**
+## **10. Prefixes by Data Type**
 
 | Prefix  | Type              | Example                  |
 | ------- | ----------------- | ------------------------ |
-| `SM_`   | Static Mesh       | SM_BuildingSkyscraper01  |
-| `SK_`   | Skeletal Mesh     | SK_Character_Detective   |
-| `ANIM_` | Animation         | ANIM_HumanRunForward     |
-| `MI_`   | Material Instance | MI_MetalRustySteel       |
-| `M_`    | Material (Master) | M_Standard_PBR           |
-| `T_`    | Texture           | T_Concrete_BaseColor     |
-| `UV_`   | UV Map            | UV_Map_001               |
-| `A_`    | Audio             | A_Background             |
+| `SM_`   | Static Mesh       | `SM_BuildingSkyscraper01`  |
+| `SK_`   | Skeletal Mesh     | `SK_Character_Detective`   |
+| `ANIM_` | Animation         | `ANIM_HumanRunForward`     |
+| `MI_`   | Material Instance | `MI_MetalRustySteel`       |
+| `M_`    | Material (Master) | `M_Standard_PBR`           |
+| `T_`    | Texture           | `T_Concrete_BaseColor`     |
+| `UV_`   | UV Map            | `UV_Map_001`               |
+| `A_`    | Audio             | `A_Background`             |
 
 ---
 
-## **Asset Specifications**
+## **9. Asset Specifications**
 
-Binary files should use `PascalCase` with the format `[ObjectName][ArchetypeNumbering].[Extension]`.
+This section defines the technical specifications for mesh and image binary exports.
 
 **Special case for baking pipelines:** Mesh files used in texture baking workflows require complexity-level suffixes: `_low`, `_high`, `_cage`. For example: `Table01_low.fbx`, `Table01_high.fbx`, `Table01_cage.fbx`.
 
@@ -221,27 +252,27 @@ Binary files should use `PascalCase` with the format `[ObjectName][ArchetypeNumb
 
 ---
 
-### **Image Binaries Publication**
+### **a. Image Binaries Publication**
 
 Texture files follow this naming pattern:
 
 ```
-T_[ObjectName][ArchetypeNumbering]_[TextureType].[Extension]
+T_ObjectName##_TextureType.extension
 ```
 
 **Example:** `T_Table01_BaseColor.webp`
 
-| Texture Type       | Purpose     | .png | .jpg | .webp | Notes                    |
-| ------------------ | ----------- | :--: | :--: | :---: | ------------------------ |
-| Reference          | Reference   |      |  ✓   |       | Any format, optional     |
-| BaseColor          | Publication |      |      |   ✓   | 8-bit sRGB               |
-| Normal             | Publication |  ✓   |      |       | 16-bit linear, OpenGL    |
-| Roughness          | Publication |      |      |   ✓   | 8-bit linear             |
-| Metalness          | Publication |      |      |   ✓   | 8-bit linear             |
-| ORM                | Publication |      |      |   ✓   | 8-bit (Occlusion/Roughness/Metalness) |
-| MetallicSmoothness | Publication |      |      |   ✓   | 8-bit                    |
-| Opacity            | Publication |      |      |   ✓   | 8-bit linear, optional   |
-| Emissive           | Publication |      |      |   ✓   | 8-bit sRGB, optional     |
+| Texture Type       | Purpose     | .png | .jpg | .webp | Notes                              |
+| ------------------ | ----------- | :--: | :--: | :---: | ---------------------------------- |
+| Reference          | Reference   |      |  ✓   |       | Any format, optional               |
+| BaseColor          | Publication |      |      |   ✓   | 8-bit sRGB                         |
+| Normal             | Publication |  ✓   |      |       | 16-bit linear, OpenGL              |
+| Roughness          | Publication |      |      |   ✓   | 8-bit linear                       |
+| Metalness          | Publication |      |      |   ✓   | 8-bit linear                       |
+| ORM                | Publication |      |      |   ✓   | 8-bit linear, packed channels      |
+| MetallicSmoothness | Publication |      |      |   ✓   | 8-bit                              |
+| Opacity            | Publication |      |      |   ✓   | 8-bit linear, optional             |
+| Emissive           | Publication |      |      |   ✓   | 8-bit sRGB, optional               |
 
 **Texture Type Suffixes:**
 - `_BaseColor` - Albedo/diffuse color map
@@ -255,17 +286,17 @@ T_[ObjectName][ArchetypeNumbering]_[TextureType].[Extension]
 
 ---
 
-## **Architecture Projects**
+## **10. Architecture Projects**
 
 When we explicitly refer to *"Architecture"*, we mean the professional discipline of building design, rather than the concept of "architecture" as used in computer science.
 
 For architectural projects, naming conventions should prioritize human readability over strict technical formatting. Binary files and related data should follow the structure:
 
 ```
-[Noun] [Adjective] [Extra-Adjective]
+Noun Adjective Extra-Adjective
 ```
 
-Every first letter of each word should be capitalized. If the `[Adjective]` or `[Extra-Adjective]` contains multiple words, it must use a hyphen (`-`) as punctuation. The adjectives should be ordered from the most general category to the more specific.
+Every first letter of each word should be capitalized. If the adjective or extra-adjective contains multiple words, it must use a hyphen (`-`) as punctuation. The adjectives should be ordered from the most general category to the more specific.
 
 **Example:** `Power Socket Type-F`
 
@@ -287,7 +318,7 @@ Breakdown:
 
 This naming convention is based on the Rust language API guidelines, Unity Engine, and Unreal Engine asset naming conventions:
 
-- [Rust Api Guidelines for Naming](https://rust-lang.github.io/api-guidelines/naming.html)
+- [Rust API Guidelines for Naming](https://rust-lang.github.io/api-guidelines/naming.html)
 - [Rust Naming Conventions](https://github.com/rust-lang/rfcs/blob/master/text/0430-finalizing-naming-conventions.md)
 - [Unreal Engine Recommended Asset Naming Convention](https://dev.epicgames.com/documentation/en-us/unreal-engine/recommended-asset-naming-conventions-in-unreal-engine-projects)
 - [Best practices for organizing your Unity project](https://unity.com/how-to/organizing-your-project)
