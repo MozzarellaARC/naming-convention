@@ -327,9 +327,10 @@ Breakdown:
 
 ## **Footnote**
 
-This naming convention is based on the Rust language API guidelines, Unity Engine, and Unreal Engine asset naming conventions:
+This documentation are written based on this reference:
 
-- [Rust API Guidelines for Naming](https://rust-lang.github.io/api-guidelines/naming.html)
-- [Rust Naming Conventions](https://github.com/rust-lang/rfcs/blob/master/text/0430-finalizing-naming-conventions.md)
 - [Unreal Engine Recommended Asset Naming Convention](https://dev.epicgames.com/documentation/en-us/unreal-engine/recommended-asset-naming-conventions-in-unreal-engine-projects)
 - [Best practices for organizing your Unity project](https://unity.com/how-to/organizing-your-project)
+- [Rust API Guidelines for Naming](https://rust-lang.github.io/api-guidelines/naming.html)
+- [Rust Naming Conventions](https://github.com/rust-lang/rfcs/blob/master/text/0430-finalizing-naming-conventions.md)
+- [C# identifier naming rules and conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names)
