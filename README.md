@@ -1,6 +1,6 @@
-# **Project Structure and Naming Convention**
+# **Preface**
 
-A personal standardized naming convention for 3D related projects and Architectural engineering. Although this standardization very verbose, by all means will not replace the naming convention of a basic English. For example, a project folder with the purpose to be read by the end user should be written like this `Reference Image`, contrary to the directory structure naming convention where it should be written as `ref` or `reference-image`
+When dealing with namespaces or naming conventions, the rules can vary depending on the platform. For example, the Windows file system is case-insensitive by default but case-preserving. This means that `AppleRed` and `applered` refer to the same file or folder, even though Windows remembers the original casing. This behavior can make namespace organization more difficult, because separating words such as Apple and Red cannot rely on neither case differences or punctuation alone and instead requires more complicated parsing rules. The situation can feel even more inconsistent because the .NET/C# ecosystem commonly uses `PascalCase` for namespaces, classes, and other identifiers, even though the underlying Windows file system does not enforce case sensitivity.
 
 ## **Table of Contents**
 
@@ -17,16 +17,16 @@ A personal standardized naming convention for 3D related projects and Architectu
 
 ## **Data Structure**
 
-In most DCC application, it is common for a data comprise of object and the actual data, for example a data of object `Apple` contains a mesh data of `Apple` and material data of `MI_AppleRed`. This object data content can change, like for example an object of `Apple` may have mesh data of `Orange` and material data of `MI_BananaYellow`.
-
+In most DCC application, it is common for a data consists of object and the actual data, for example a data of object `Apple` contains a mesh data of `Apple` and material data of `MI_AppleRed`. This object data content can change, like for example an object of `Apple` may have mesh data of `Orange` and material data of `MI_BananaYellow`.
+consists
 Now the naming convention for this data structure in general use `PascalCase` while the binary data that is referenced by the object use `Title_Snake_Case`:
 
 Apple
-├─Apple -> mesh data
+├─SM_Apple -> mesh data
 └─MI_AppleRed -> material instance data
     └─T_AppleRed_Normal.jpeg -> image binary data
 
-The prefix T_ and the suffix _Normal will be explain later on in the documentation. Please keep in mind that each DCC has different patter when dealing with instances, like for example duplicating `Apple` object inside Unity engine will give (n) suffix while in Blender gives .n suffix.
+The prefix T_ and the suffix _Normal will be explain later on in the documentation. Please keep in mind that each DCC has different pattern when dealing with instances, like for example duplicating `Apple` object inside Unity engine will give (n) suffix while in Blender gives .n suffix.
 
 ```
 Unity
@@ -42,7 +42,7 @@ etc.
 
 ## **Directory Structure**
 
-The naming convention for the directory use `kebab-case`, the use of whitespace to name directories are forbidden because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if I have a folder with name User Application, it should be written as `user-application`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image`. Binary data filenames (like textures, models, and reference materials) should use `Title_Snake_Case` regardless of their folder location. This is how the directory structure would look like:
+The naming convention for the directory use `kebab-case`, the use of whitespace to name directories are problematic because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if for example a folder with name User Application, should be written as `user-application`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image`. Binary data filenames (like textures, models, and reference materials) should use `Title_Snake_Case` regardless of their folder location. This is how the directory structure would look like:
 
 ```
 example-project
@@ -52,26 +52,28 @@ example-project
 ├─lib
 │  ├─models
 │  │  ├─Table01.blend -> binary
-│  │  │  └─SM_Table01 -> binary data
-│  │  └─Human01_001.blend -> binary
-│  │     └─Human01 -> binary data
+│  │  │  └─SM_Table01 -> static mesh data
+│  │  └─Human01.blend -> binary
+│  │     └─SK_Human01 -> skeletal mesh data
 │  ├─textures
 │  │  ├─T_Table01_BaseColor.webp -> binary data
 │  │  ├─T_Table01_Normal.png -> binary data
 │  │  └─T_Table01_ORM.webp -> binary data
 │  ├─texturing -> substance painter or marmoset toolbag
-│  │  └─Table_Texturing.spp
+│  │  └─TableTexturing.spp
 │  └─exports
 │     └─Table01.fbx
 ├─ref
-│  ├─PerforatedMetal.jpg -> binary data
-│  └─Dimensions.pdf -> binary data
+│  ├─*.jpg -> binary data reference
+│  └─*.pdf -> binary data reference
 └─scripts
     ├─PlayerController.cs -> C# standard naming convention
     └─Scripts.cs -> C# standard naming convention
 ```
 
 ## **Project Structure**
+
+This project structure are designed for game engine specific that is Unity Game engine, 
 
 ```
 Assets
@@ -127,9 +129,8 @@ And here is how the data naming convention should be written:
 
 | Type           | Convention                                                 | Example      |
 | -------------- | ---------------------------------------------------------- | ------------ |
-| `UV`           | UV_[Identifier]_[Numbering]                                | UV_Map_001   |
-| `Dynamic Mesh` | [ObjectName][ArchetypeNumbering]                           | Human01      |
-| `Material`     | MI/M_[ObjectName][ArchetypeNumbering]_[AlphabeticNumerals] | MI_Table01_a |
+| `UV`           | UV_[Identifier]_[NumericalSequence]                                | UV_Map_001   |
+| `Material`     | MI/M_[ObjectName][ArchetypeNumbering]_[AlphabeticSequence] | MI_Table01_a |
 
 #### **Prefixes by Data Type**
 
@@ -148,7 +149,7 @@ And here is how the data naming convention should be written:
 
 ## **Asset Specifications**
 
-Binary files should use `Title_Snake_Case` naming convention with the format `[ObjectName].[Extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_low`, `_high`, `_cage` for example `Table_low.fbx`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to be given unique identifier.
+Binary files should use `PascalCase` with the format `[ObjectName].[Extension]`. There is also a special case for mesh binaries that is targeted to baking pipeline where each mesh related to their complexity needs to be given suffix `_low`, `_high`, `_cage` for example `Table_low.fbx`. Although some DCC can read the mesh data on their interface, for the most part the mesh data does not need to be given unique identifier.
 
 ### **Mesh Binaries Publication**
 
@@ -192,4 +193,4 @@ Every first letter of each identifier should be capitalized. If the [Adjective] 
 
 ```Power Socket Type-F```
 
-In this example, `Power` is the Noun, `Socket` is the general-category Adjective, and `Type-F` is the specific-category [ Extra-Adjective ]. Notice that `Type-F` comes after `Socket` because Socket identifies the broader category. At this category level, there are only two possibilities: `Socket` (power-source input) and `Plug` (power-source output), while connector types can vary.
+In this example, `Power` is the Noun, `Socket` is the general-category Adjective, and `Type-F` is the specific-category [Extra-Adjective]. Notice that `Type-F` comes after `Socket` because Socket identifies the broader category. At this category level, there are only two possibilities: `Socket` (power-source input) and `Plug` (power-source output), while connector types can vary.
