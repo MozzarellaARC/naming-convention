@@ -6,14 +6,22 @@ With all of this in mind, the community uses `PascalCase` or `PascalCase` with a
 
 ## **Table of Contents**
 
-1. [General Naming Conventions](#general-naming-conventions)
-2. [Asset Workspace](#asset-workspace)
-3. [Project Structure](#project-structure)
-4. [Data Structure](#data-structure)
-5. [Asset Specifications](#asset-specifications)
-   - [Mesh Binaries Publication](#mesh-binaries-publication)
-   - [Image Binaries Publication](#image-binaries-publication)
-6. [Architecture Projects](#architecture-projects)
+1. [General Naming Conventions](#1-general-naming-conventions)
+   - [Archetype vs. Instance Numbering](#1a-archetype-vs-instance-numbering)
+   - [Hierarchical Data Relationship](#1b-hierarchical-data-relationship)
+   - [Naming Patterns](#1c-naming-patterns)
+2. [Asset Workspace](#2-asset-workspace)
+3. [Project Structure](#3-project-structure)
+4. [Data Structure](#4-data-structure)
+   - [Binary Naming Conventions](#4a-binary-naming-conventions)
+   - [Object and Data Block Structure](#4b-object-and-data-block-structure)
+   - [DCC Instance Suffixes](#4c-dcc-instance-suffixes)
+   - [Special Case Naming Conventions](#4d-special-case-naming-conventions)
+   - [Prefixes by Data Type](#4e-prefixes-by-data-type)
+5. [Asset Specifications](#5-asset-specifications)
+   - [Mesh Binaries Publication](#5a-mesh-binaries-publication)
+   - [Image Binaries Publication](#5b-image-binaries-publication)
+6. [Architecture Projects](#6-architecture-projects)
 7. [Footnote](#footnote)
 
 ---
@@ -22,17 +30,20 @@ With all of this in mind, the community uses `PascalCase` or `PascalCase` with a
 
 This documentation uses `PascalCase` as the foundation for all naming conventions. Objects and their associated data blocks follow a hierarchical relationship where prefixes and suffixes provide type identification and variant information.
 
-### **a. Archetype vs. Instance Numbering:**
-- Archetype numbering (e.g., `01`, `02`) - Identifies different design variants of the same object type. Example: `Car01` might be a sedan while `Car02` is a truck.
-- Instance numbering: (e.g., `_001`, `_002`) - Identifies duplicate copies of the same archetype within a scene. Used for objects but not for data blocks.
+### **1a. Archetype vs. Instance Numbering**
 
-### **b. Hierarchical Data Relationship:**
+- **Archetype numbering** (e.g., `01`, `02`) - Identifies different design variants of the same object type. Example: `Car01` might be a sedan while `Car02` is a truck.
+- **Instance numbering** (e.g., `_001`, `_002`) - Identifies duplicate copies of the same archetype within a scene. Used for objects but not for data blocks.
+
+### **1b. Hierarchical Data Relationship**
+
 Objects serve as containers that reference underlying data blocks. These data blocks use prefixes to identify their type (mesh, material, texture, etc.) and maintain a naming relationship with their parent object.
 
-### **c. Naming Patterns:**
-- Objects - Use descriptive names with archetype numbers and optional instance suffixes
-- Data Blocks - Use prefixes followed by the parent object's name and archetype number
-- Binaries - Use the same naming as data blocks with appropriate file extensions
+### **1c. Naming Patterns**
+
+- **Objects** - Use descriptive names with archetype numbers and optional instance suffixes
+- **Data Blocks** - Use prefixes followed by the parent object's name and archetype number
+- **Binaries** - Use the same naming as data blocks with appropriate file extensions
 
 **Quick Reference:**
 
@@ -85,7 +96,7 @@ example-project
 
 ## **3. Project Structure**
 
-This section demonstrates the standard folder organization within a Unity Game Engine project. Unlike the [Asset Workspace](#asset-workspace) which organizes source asset creation files, the Project Structure represents how assets are organized within Unity's `Assets` folder after import.
+This section demonstrates the standard folder organization within a Unity Game Engine project. Unlike the [Asset Workspace](#2-asset-workspace) which organizes source asset creation files, the Project Structure represents how assets are organized within Unity's `Assets` folder after import.
 
 Unity projects follow engine-specific conventions where directories use either `PascalCase` or single-term names with capitalized first letters (e.g., `Art`, `Audio`, `Code`), rather than the `kebab-case` used in source asset directories.
 
@@ -131,7 +142,7 @@ Assets
 
 ## **4. Data Structure**
 
-### **a. Binary Naming Conventions**
+### **4a. Binary Naming Conventions**
 
 Binary files follow `PascalCase` naming conventions. When working with assets that have multiple variants or archetypes, append a two-digit numeric suffix directly to the name without any separator. For assets that require additional identifiers beyond the base name, use an underscore (`_`) to separate these identifiers.
 
@@ -150,7 +161,7 @@ Binary files follow `PascalCase` naming conventions. When working with assets th
 
 ---
 
-### **b. Object and Data Block Structure**
+### **4b. Object and Data Block Structure**
 
 In most DCC applications, an object references several data blocks. For example, an object named `Apple01` may reference mesh data `SM_Apple01` and material data `MI_Apple01_a`:
 
@@ -189,7 +200,7 @@ Child data blocks must be named with appropriate prefixes. An object named `Car0
 
 ---
 
-### **c. DCC Instance Suffixes**
+### **4c. DCC Instance Suffixes**
 
 Each DCC auto-generates instance suffixes differently when duplicating objects:
 
@@ -207,7 +218,7 @@ Apple.002
 
 ---
 
-### **7. Special Case Naming Conventions**
+### **4d. Special Case Naming Conventions**
 
 | Type       | Format                            | Example      | Notes                                                                    |
 | ---------- | --------------------------------- | ------------ | ------------------------------------------------------------------------ |
@@ -220,7 +231,7 @@ Apple.002
 
 ---
 
-## **10. Prefixes by Data Type**
+### **4e. Prefixes by Data Type**
 
 | Prefix  | Type              | Example                  |
 | ------- | ----------------- | ------------------------ |
@@ -235,7 +246,7 @@ Apple.002
 
 ---
 
-## **9. Asset Specifications**
+## **5. Asset Specifications**
 
 This section defines the technical specifications for mesh and image binary exports.
 
@@ -243,7 +254,7 @@ This section defines the technical specifications for mesh and image binary expo
 
 ---
 
-### **Mesh Binaries Publication**
+### **5a. Mesh Binaries Publication**
 
 | Data | Purpose     | .blend | .fbx | .gltf | .obj | Notes |
 | ---- | ----------- | :----: | :--: | :---: | :--: | ----- |
@@ -252,7 +263,7 @@ This section defines the technical specifications for mesh and image binary expo
 
 ---
 
-### **a. Image Binaries Publication**
+### **5b. Image Binaries Publication**
 
 Texture files follow this naming pattern:
 
@@ -286,7 +297,7 @@ T_ObjectName##_TextureType.extension
 
 ---
 
-## **10. Architecture Projects**
+## **6. Architecture Projects**
 
 When we explicitly refer to *"Architecture"*, we mean the professional discipline of building design, rather than the concept of "architecture" as used in computer science.
 
