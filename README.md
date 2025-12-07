@@ -72,24 +72,24 @@ example-project
 ├─publish
 ├─lib
 │  ├─models
-│  │  ├─Table01.blend → binary
-│  │  │  └─SM_Table01 → static mesh data
-│  │  └─Human01.blend → binary
-│  │     └─SK_Human01 → skeletal mesh data
+│  │  ├─Table01.blend -> binary
+│  │  │  └─SM_Table01 -> static mesh data
+│  │  └─Human01.blend -> binary
+│  │     └─SK_Human01 -> skeletal mesh data
 │  ├─textures
-│  │  ├─T_Table01_BaseColor.webp → binary data
-│  │  ├─T_Table01_Normal.png → binary data
-│  │  └─T_Table01_ORM.webp → binary data
-│  ├─texturing → substance painter or marmoset toolbag
+│  │  ├─T_Table01_BaseColor.webp -> binary data
+│  │  ├─T_Table01_Normal.png -> binary data
+│  │  └─T_Table01_ORM.webp -> binary data
+│  ├─texturing -> substance painter or marmoset toolbag
 │  │  └─TableTexturing.spp
 │  └─exports
 │     └─Table01.fbx
 ├─ref
-│  ├─*.jpg → binary data reference
-│  └─*.pdf → binary data reference
+│  ├─*.jpg -> binary data reference
+│  └─*.pdf -> binary data reference
 └─scripts
-    ├─PlayerController.cs → C# standard naming convention
-    └─Scripts.cs → C# standard naming convention
+    ├─PlayerController.cs -> C# standard naming convention
+    └─Scripts.cs -> C# standard naming convention
 ```
 
 ---
@@ -108,18 +108,18 @@ The example below shows how assets are categorized by type within Unity's `Asset
 
 ```
 Assets
-├─Art → primary content folder (models, materials, textures)
+├─Art -> primary content folder (models, materials, textures)
 │  ├─Materials
-│  │  ├─Table01_a → material variant A
+│  │  ├─Table01_a -> material variant A
 │  │  │  └─T_Table01_a_BaseColor.webp
-│  │  └─Table01_b → material variant B
+│  │  └─Table01_b -> material variant B
 │  ├─Models
 │  │  ├─Table01.blend
-│  │  │  └─Table01 → object container
-│  │  │     └─SM_Table01 → static mesh data
+│  │  │  └─Table01 -> object container
+│  │  │     └─SM_Table01 -> static mesh data
 │  │  └─Human01.blend
-│  │     └─Human01 → object container
-│  │        └─SK_Human01 → skeletal mesh data
+│  │     └─Human01 -> object container
+│  │        └─SK_Human01 -> skeletal mesh data
 │  └─Textures
 │     ├─T_Table01_BaseColor.webp
 │     ├─T_Table01_Normal.png
@@ -167,9 +167,9 @@ In most DCC applications, an object references several data blocks. For example,
 
 ```
 Apple01
-├─SM_Apple01 → static mesh data
-└─MI_Apple01_a → material instance data
-    └─T_Apple01_BaseColor.webp → texture binary data
+├─SM_Apple01 -> static mesh data
+└─MI_Apple01_a -> material instance data
+    └─T_Apple01_BaseColor.webp -> texture binary data
 ```
 
 **Object Naming Pattern**
