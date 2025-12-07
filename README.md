@@ -1,6 +1,8 @@
 # **Preface**
 
-When dealing with namespaces or naming conventions, the rules can vary depending on the platform. For example, the Windows file system is case-insensitive by default but case-preserving. This means that `AppleRed` and `applered` refer to the same file or folder, even though Windows remembers the original casing. This behavior can make namespace organization more difficult, because separating words such as Apple and Red cannot rely on neither case differences or punctuation alone and instead requires more complicated parsing rules. The situation can feel even more inconsistent because the .NET/C# ecosystem commonly uses `PascalCase` for namespaces, classes, and other identifiers, even though the underlying Windows file system does not enforce case sensitivity.
+When dealing with namespaces or naming conventions, the rules can vary depending on the platform. For example, the Windows file system is case-insensitive by default but case-preserving. This means that `AppleRed` and `applered` refer to the same file or folder, even though Windows remembers the original casing. This behavior can make namespace organization more difficult, because separating words such as Apple and Red cannot rely on case differences or punctuation alone and instead requires more complicated parsing rules.
+
+Even though with all of that in mind, the community use `PascalCase` or `PascalCase` with affixes when naming things. Because we should not forget about human readability and cross platform collisions.
 
 ## **Table of Contents**
 
@@ -17,16 +19,18 @@ When dealing with namespaces or naming conventions, the rules can vary depending
 
 ## **Data Structure**
 
-In most DCC application, it is common for a data consists of object and the actual data, for example a data of object `Apple` contains a mesh data of `Apple` and material data of `MI_AppleRed`. This object data content can change, like for example an object of `Apple` may have mesh data of `Orange` and material data of `MI_BananaYellow`.
-consists
-Now the naming convention for this data structure in general use `PascalCase` while the binary data that is referenced by the object use `Title_Snake_Case`:
+In most DCC applications, it is common for an object to reference several data blocks—for example, an object named `Apple` may reference mesh data also named `Apple` and material data named `MI_AppleRed`. Some DCCs allow these data block names to be mismatched; for example, an object named `Apple` could use mesh data named `Orange` and material data named `MI_BananaYellow`. However, naming conventions should not depend on this permissiveness.
+
+In general, object names typically use `PascalCase`, while the underlying data blocks referenced by those objects may also use `PascalCase` but with affixes applied, such as in the case of materials.
+
+Now the naming convention for this data structure in general uses `PascalCase` while the binary data that is referenced by the object use `PascalCase` with added prefixes:
 
 Apple
 ├─SM_Apple -> mesh data
 └─MI_AppleRed -> material instance data
     └─T_AppleRed_Normal.jpeg -> image binary data
 
-The prefix T_ and the suffix _Normal will be explain later on in the documentation. Please keep in mind that each DCC has different pattern when dealing with instances, like for example duplicating `Apple` object inside Unity engine will give (n) suffix while in Blender gives .n suffix.
+The prefix T_ and the suffix _Normal will be explained later in the documentation. Please keep in mind that each DCC applies its own pattern when handling duplicated instances; for example, duplicating the Apple object in Unity results in a (1),(2),(3) suffix, while Blender uses .001,.002,.003 here is the example:
 
 ```
 Unity
@@ -42,7 +46,7 @@ etc.
 
 ## **Directory Structure**
 
-The naming convention for the directory use `kebab-case`, the use of whitespace to name directories are problematic because most string parser will ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if for example a folder with name User Application, should be written as `user-application`. Although the top level directory uses `kebab-case` using the same convention for the sub-folder might be confusing, so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image`. Binary data filenames (like textures, models, and reference materials) should use `Title_Snake_Case` regardless of their folder location. This is how the directory structure would look like:
+The naming convention for the top level project name directory use `kebab-case`, the use of whitespace to name directories are problematic because some string parser ignore whitespaces, which makes using whitespaces redundant and harder to organize with a script. So if for example a folder with name User Application, should be written as `user-application`. Although the top-level directory uses `kebab-case` for clarity and project identity, applying the same rule to sub-folders creates unnecessary visual noise and complicates script-based parsing of directory paths. Sub-folders represent categorical namespaces (e.g., ref, lib, scripts) and rarely require multi-word descriptors. Using short, single-term names keeps the hierarchy easy to scan and reduces ambiguity in automated tooling., so the recommended way to naming the sub-folder is by using single wording term like for example use `ref` instead of `reference-image`. Binary data filenames (like textures, models, and reference materials) should use `PascalCase` regardless of their folder location. This is how the directory structure would look like:
 
 ```
 example-project
@@ -109,9 +113,9 @@ Assets
 
 ## **General Naming Conventions**
 
-The naming convention for working DCC object data uses `PascalCase`, while binary data files use `Title_Snake_Case`. Objects and their child data follow a hierarchical structure where prefixes identify data types.
+The naming convention for DCC specific object data and binaries uses `PascalCase`. Objects and their child data follow a hierarchical structure where prefixes identify data types.
 
-Each object that has child data needs to be named with appropriate prefixes. For example, an object named `Car01` has a static mesh data named `SM_Car01`. This mesh data should not have instance numbering, so it doesn't need the `[Numbering]` affix. However, the object `Car01` itself can be instanced in some DCC applications, and the naming convention would be written as `Car01_001`. Notice that the `01` after the word "Car" is an archetype number. Another example: material instances like `MI_Table` use texture map data such as `T_Table_Normal.png`. There is a special case for 3D object that has dynamic mesh data, the mesh data in this case should use the object naming convention for example an object of `Human01` has a dynamic mesh data of `Human01`.
+Child data needs to be named with appropriate prefixes. For example, an object named `Car01` has a static mesh data named `SM_Car01`. This mesh data should not have instance numbering, so it doesn't need the `[Numbering]` affix. However, the object `Car01` itself can be instanced in some DCC applications and this instance sequence are not part of this naming conventions. Notice that the `01` after the word "Car" is an archetype number. Another example: material instances like `MI_Table` use texture map data such as `T_Table_Normal.png`. There is a special case for 3D object that has dynamic mesh data, the mesh data in this case should use the object naming convention for example an object of `Human01` has a skeletal mesh data of `SK_Human01`.
 
 Here is how the object naming convention should be written:
 
@@ -129,20 +133,20 @@ And here is how the data naming convention should be written:
 
 | Type           | Convention                                                 | Example      |
 | -------------- | ---------------------------------------------------------- | ------------ |
-| `UV`           | UV_[Identifier]_[NumericalSequence]                                | UV_Map_001   |
+| `UV`           | UV_[Identifier]_[NumericalSequence]                        | UV_Map_001   |
 | `Material`     | MI/M_[ObjectName][ArchetypeNumbering]_[AlphabeticSequence] | MI_Table01_a |
 
 #### **Prefixes by Data Type**
 
 | Prefix  | Type              | Example                  |
 | ------- | ----------------- | ------------------------ |
-| `SM_`   | Static Mesh       | SM_Building_Skyscraper01 |
+| `SM_`   | Static Mesh       | SM_BuildingSkyscraper01 |
 | `SK_`   | Skeletal Mesh     | SK_Character_Detective   |
 | `ANIM_` | Animation         | ANIM_HumanRunForward     |
-| `MI_`   | Material Instance | MI_Metal_RustySteel      |
+| `MI_`   | Material Instance | MI_MetalRustySteel      |
 | `M_`    | Material (Master) | M_Standard_PBR           |
 | `T_`    | Texture           | T_Concrete_BaseColor     |
-| `UV_`   | UV                | UV_Map                   |
+| `UV_`   | UV                | UV_Map_001               |
 | `A_`    | Audio             | A_Background             |
 
 ---
